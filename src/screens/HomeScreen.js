@@ -1,4 +1,4 @@
-import {View, Text, StatusBar, Platform} from 'react-native';
+import {View, Text, StatusBar, Platform, ScrollView} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -23,6 +23,12 @@ export default function HomeScreen() {
           <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
         </View>
       </SafeAreaView>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: 10}}>
+        {/* daftar film trending dengan carousel */}
+      </ScrollView>
     </View>
   );
 }
