@@ -1,7 +1,6 @@
-import {View, Text} from 'react-native';
 import React from 'react';
-import HomeScreen from './src/screens/HomeScreen';
+import AppNavigation from './src/navigation/AppNavigation';
 
 export default function App() {
-  return <HomeScreen />;
+  return <AppNavigation />;
 }
