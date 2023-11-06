@@ -35,7 +35,7 @@ export default function MovieList({title, data}) {
           return (
             <TouchableWithoutFeedback
               key={index}
-              onPress={() => navigation.navigate('movie', item)}>
+              onPress={() => navigation.navigate('Movie', item)}>
               <View className="space-y-1 mr-4">
                 <Image
                   source={require('../../assets/images/moviePoster2.jpeg')}
