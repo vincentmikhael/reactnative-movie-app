@@ -12,7 +12,7 @@ import {styles} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 var {width, height} = Dimensions.get('window');
 
-export default function MovieList({title, data}) {
+export default function MovieList({title, data, hideSeeAll}) {
   let movieName = 'Equalizer 3';
   const navigation = useNavigation();
   return (
@@ -20,11 +20,13 @@ export default function MovieList({title, data}) {
       {/* title */}
       <View className="mx-4 flex-row justify-between items-center">
         <Text className="text-white text-xl">{title}</Text>
-        <TouchableOpacity>
-          <Text style={styles.text} className="text-lg">
-            Semua
-          </Text>
-        </TouchableOpacity>
+        {!hideSeeAll && (
+          <TouchableOpacity>
+            <Text style={styles.text} className="text-lg">
+              Semua
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       {/* list film */}
       <ScrollView
