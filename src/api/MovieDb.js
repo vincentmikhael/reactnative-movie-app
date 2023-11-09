@@ -1,11 +1,13 @@
 import axios from 'axios';
-import {baseUrl, apiKey} from '../constants';
-import {err} from 'react-native-svg/lib/typescript/xml';
+import {baseUrl, posterImageUrl, apiKey} from '../constants';
 
 const trendingMoviesEndpoint = `${baseUrl}/trending/movie/day?api_key=${apiKey}`;
 const upcominggMoviesEndpoint = `${baseUrl}/movie/upcoming?api_key=${apiKey}`;
 const topRatedMoviesEndpoint = `${baseUrl}/movie/top_rated?api_key=${apiKey}`;
 
+const image500 = path => (path ? `${posterImageUrl}w500${path}` : null);
+const image342 = path => (path ? `${posterImageUrl}w342${path}` : null);
+const image185 = path => (path ? `${posterImageUrl}w185${path}` : null);
 const apiCall = async (endpoint, params) => {
   const options = {
     method: 'GET',
@@ -31,4 +33,11 @@ const fetchTopRatedMovies = () => {
   return apiCall(topRatedMoviesEndpoint);
 };
 
-export {fetchTrendingMovies, fetchUpcomingMovies, fetchTopRatedMovies};
+export {
+  image185,
+  image342,
+  image500,
+  fetchTrendingMovies,
+  fetchUpcomingMovies,
+  fetchTopRatedMovies,
+};
