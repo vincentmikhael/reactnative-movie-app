@@ -1,4 +1,11 @@
-import {View, Text, StatusBar, Platform, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -8,12 +15,14 @@ import {
 import {styles} from '../theme';
 import TrendingMovies from '../components/TrendingMovies';
 import MovieList from '../components/MovieList';
+import {useNavigation} from '@react-navigation/native';
 
 const ios = Platform.OS === 'ios';
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upcoming, setUpcoming] = useState([1, 2, 3]);
   const [topRated, setTopRated] = useState([1, 2, 3]);
+  const navigation = useNavigation();
   return (
     <View className="flex-1 bg-neutral-800">
       {/* search bar */}
@@ -25,7 +34,9 @@ export default function HomeScreen() {
             <Text style={styles.text}>K</Text>
             atalog <Text style={styles.text}>F</Text>ilm
           </Text>
-          <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
 
