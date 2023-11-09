@@ -10,7 +10,11 @@ export default function Loading() {
     <View
       style={{height, width}}
       className="absolute flex-row justify-center items-center">
-      <Progress.Circle thickness={12} size={160} color={theme.background} />
+      <Progress.CircleSnail
+        thickness={12}
+        size={160}
+        color={theme.background}
+      />
     </View>
   );
 }

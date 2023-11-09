@@ -16,12 +16,14 @@ import {styles} from '../theme';
 import TrendingMovies from '../components/TrendingMovies';
 import MovieList from '../components/MovieList';
 import {useNavigation} from '@react-navigation/native';
+import Loading from '../components/Loading';
 
 const ios = Platform.OS === 'ios';
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
   const [upcoming, setUpcoming] = useState([1, 2, 3]);
   const [topRated, setTopRated] = useState([1, 2, 3]);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   return (
     <View className="flex-1 bg-neutral-800">
@@ -39,19 +41,22 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: 10}}>
+          {/* daftar film trending dengan carousel */}
+          <TrendingMovies data={trending} />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: 10}}>
-        {/* daftar film trending dengan carousel */}
-        <TrendingMovies data={trending} />
+          {/* daftar film akan tayang */}
+          <MovieList title="Akan Tayang" data={upcoming} />
 
-        {/* daftar film akan tayang */}
-        <MovieList title="Akan Tayang" data={upcoming} />
-
-        {/* daftar film rating tertinggi */}
-        <MovieList title="Rating Teratas" data={topRated} />
-      </ScrollView>
+          {/* daftar film rating tertinggi */}
+          <MovieList title="Rating Teratas" data={topRated} />
+        </ScrollView>
+      )}
     </View>
   );
 }

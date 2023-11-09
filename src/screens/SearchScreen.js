@@ -12,12 +12,15 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {XMarkIcon} from 'react-native-heroicons/outline';
+import Loading from '../components/Loading';
 
 const {width, height} = Dimensions.get('window');
 
 export default function SearchScreen() {
   const navigation = useNavigation();
   const [results, setResults] = useState([1, 2, 3, 4]);
+  const [loading, setLoading] = useState(false);
+
   let movieName = 'Equalizer 3';
   return (
     <SafeAreaView className="bg-neutral-800 flex-1">
@@ -34,7 +37,9 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
       {/* hasil pencarian */}
-      {results.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : results.length > 0 ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 15}}

@@ -16,6 +16,7 @@ import {styles, theme} from '../theme';
 import {LinearGradient} from 'react-native-linear-gradient';
 import Cast from '../components/Cast';
 import MovieList from '../components/MovieList';
+import Loading from '../components/Loading';
 
 var {width, height} = Dimensions.get('window');
 const ios = Platform.OS === 'ios';
@@ -26,6 +27,7 @@ export default function MovieScreen() {
   const [isFavorite, toggleFavorite] = useState(false);
   const [cast, setCast] = useState([1, 2, 3, 4, 5]);
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {}, [item]);
   let movieName = 'Equalizer 3';
 
@@ -53,27 +55,31 @@ export default function MovieScreen() {
             />
           </TouchableOpacity>
         </SafeAreaView>
-        <View>
-          <Image
-            source={require('../../assets/images/moviePoster1.jpeg')}
-            //source={{uri: image500(item.poster_path)}}
-            style={{
-              width,
-              height: height * 0.55,
-            }}
-          />
-          <LinearGradient
-            colors={[
-              'transparent',
-              'rgba(23, 23, 23, 0.8)',
-              'rgba(23, 23, 23, 1)',
-            ]}
-            style={{width, height: height * 0.4}}
-            start={{x: 0.5, y: 0}}
-            end={{x: 0.5, y: 1}}
-            className="absolute bottom-0"
-          />
-        </View>
+        {loading ? (
+          <Loading />
+        ) : (
+          <View>
+            <Image
+              source={require('../../assets/images/moviePoster1.jpeg')}
+              //source={{uri: image500(item.poster_path)}}
+              style={{
+                width,
+                height: height * 0.55,
+              }}
+            />
+            <LinearGradient
+              colors={[
+                'transparent',
+                'rgba(23, 23, 23, 0.8)',
+                'rgba(23, 23, 23, 1)',
+              ]}
+              style={{width, height: height * 0.4}}
+              start={{x: 0.5, y: 0}}
+              end={{x: 0.5, y: 1}}
+              className="absolute bottom-0"
+            />
+          </View>
+        )}
       </View>
       {/* detil film */}
       <View style={{marginTop: -(height * 0.09)}} className="space-y-3">
