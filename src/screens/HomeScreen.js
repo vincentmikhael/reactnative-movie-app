@@ -50,7 +50,6 @@ export default function HomeScreen() {
     if (data && data.results) {
       setUpcoming(data.results);
     }
-    setLoading(false);
   };
   const getTopRatedMovies = async () => {
     const data = await fetchTopRatedMovies();
@@ -58,7 +57,6 @@ export default function HomeScreen() {
     if (data && data.results) {
       setTopRated(data.results);
     }
-    setLoading(false);
   };
   return (
     <View className="flex-1 bg-neutral-800">
