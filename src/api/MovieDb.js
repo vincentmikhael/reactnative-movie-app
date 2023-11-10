@@ -1,10 +1,19 @@
 import axios from 'axios';
 import {baseUrl, posterImageUrl, apiKey} from '../constants';
 
+// endpoints
 const trendingMoviesEndpoint = `${baseUrl}/trending/movie/day?api_key=${apiKey}`;
 const upcominggMoviesEndpoint = `${baseUrl}/movie/upcoming?api_key=${apiKey}`;
 const topRatedMoviesEndpoint = `${baseUrl}/movie/top_rated?api_key=${apiKey}`;
 
+// dynamic endpoints
+const movieDetailsEndpoint = id => `${baseUrl}/movie/${id}?api_key=${apiKey}`;
+const movieCreditsEndpoint = id =>
+  `${baseUrl}/movie/${id}/credits?api_key=${apiKey}`;
+const similarMoviesEndpoint = id =>
+  `${baseUrl}/movie/${id}/similar?api_key=${apiKey}`;
+
+// image / poster path full url
 const image500 = path => (path ? `${posterImageUrl}w500${path}` : null);
 const image342 = path => (path ? `${posterImageUrl}w342${path}` : null);
 const image185 = path => (path ? `${posterImageUrl}w185${path}` : null);
@@ -32,6 +41,15 @@ const fetchUpcomingMovies = () => {
 const fetchTopRatedMovies = () => {
   return apiCall(topRatedMoviesEndpoint);
 };
+const fetchMovieDetails = id => {
+  return apiCall(movieDetailsEndpoint(id));
+};
+const fetchMovieCredits = id => {
+  return apiCall(movieCreditsEndpoint(id));
+};
+const fetchSimilarMovies = id => {
+  return apiCall(similarMoviesEndpoint(id));
+};
 
 export {
   image185,
@@ -40,4 +58,7 @@ export {
   fetchTrendingMovies,
   fetchUpcomingMovies,
   fetchTopRatedMovies,
+  fetchMovieDetails,
+  fetchMovieCredits,
+  fetchSimilarMovies,
 };
