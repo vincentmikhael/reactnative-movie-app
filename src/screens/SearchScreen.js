@@ -14,7 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {XMarkIcon} from 'react-native-heroicons/outline';
 import Loading from '../components/Loading';
 import {debounce} from 'lodash';
-import {fallbackMoviePoster, fetchSearchMovies, image500} from '../api/MovieDb';
+import {fallbackMoviePoster, fetchSearchMovies, image185} from '../api/MovieDb';
 
 const {width, height} = Dimensions.get('window');
 
@@ -82,7 +82,7 @@ export default function SearchScreen() {
                       className="rounded-3xl"
                       //   source={require('../../assets/images/moviePoster2.jpeg')}
                       source={{
-                        uri: image500(item?.poster_path) || fallbackMoviePoster,
+                        uri: image185(item?.poster_path) || fallbackMoviePoster,
                       }}
                       style={{width: width * 0.44, height: height * 0.3}}
                     />
