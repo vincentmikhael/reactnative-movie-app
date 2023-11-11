@@ -35,7 +35,7 @@ export default function PersonScreen() {
 
   useEffect(() => {
     setLoading(true);
-    console.log('person: ', item.id);
+    // console.log('person: ', item.id);
     getPersonDetails(item?.id);
     getPersonMovies(item?.id);
   }, [item]);
@@ -49,7 +49,7 @@ export default function PersonScreen() {
 
   const getPersonMovies = async id => {
     const data = await fetchPersonMovies(id);
-    console.log('got person movies: ', data.cast);
+    // console.log('got person movies: ', data.cast);
     if (data && data.cast) setPersonMovies(data.cast);
   };
 
