@@ -14,6 +14,8 @@ const similarMoviesEndpoint = id =>
   `${baseUrl}/movie/${id}/similar?api_key=${apiKey}`;
 
 const personDetailsEndpoint = id => `${baseUrl}/person/${id}?api_key=${apiKey}`;
+const personMoviesEndpoint = id =>
+  `${baseUrl}/person/${id}/movie_credit?api_key=${apiKey}`;
 
 // image / poster path full url
 const image500 = path => (path ? `${posterImageUrl}w500${path}` : null);
@@ -62,6 +64,9 @@ const fetchSimilarMovies = id => {
 const fetchPersonDetails = id => {
   return apiCall(personDetailsEndpoint(id));
 };
+const fetchPersonMoviesCredit = id => {
+  return apiCall(fetchPersonMoviesCredit(id));
+};
 
 export {
   image185,
@@ -74,6 +79,7 @@ export {
   fetchMovieCredits,
   fetchSimilarMovies,
   fetchPersonDetails,
+  fetchPersonMoviesCredit,
   fallbackMoviePoster,
   fallbackPersonImage,
 };
