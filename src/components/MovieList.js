@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import {styles, theme} from '../theme';
+import {theme} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {fallbackMoviePoster, image185} from '../api/MovieDb';
 import {ArrowRightIcon} from 'react-native-heroicons/outline';
