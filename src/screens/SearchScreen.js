@@ -8,24 +8,48 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {XMarkIcon} from 'react-native-heroicons/outline';
 import Loading from '../components/Loading';
+import {debounce} from 'lodash';
+import {fallbackMoviePoster, fetchSearchMovies, image500} from '../api/MovieDb';
 
 const {width, height} = Dimensions.get('window');
 
 export default function SearchScreen() {
   const navigation = useNavigation();
-  const [results, setResults] = useState([1, 2, 3, 4]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const handleSearch = value => {
+    if (value && value.length > 2) {
+      setLoading(true);
+      fetchSearchMovies({
+        query: value,
+        include_adult: 'true',
+        language: 'en-US',
+        page: '1',
+      }).then(data => {
+        // console.log('got search results', data);
+        setLoading(false);
+        if (data && data.results) setResults(data.results);
+      });
+    } else {
+      setLoading(false);
+      setResults([]);
+    }
+  };
 
+  // tunda pengiriman handlesearch sebanyak 400 detik dengan teknik debounce
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleTextDebounce = useCallback(debounce(handleSearch, 400), []);
   let movieName = 'Equalizer 3';
   return (
     <SafeAreaView className="bg-neutral-800 flex-1">
       <View className="mx-4 mb-3 flex-row justify-between items-center border border-neutral-500 rounded-full">
         <TextInput
+          onChangeText={handleTextDebounce}
           placeholder="Cari Film"
           placeholderTextColor={'lightgray'}
           className="pb-1 pl-6 flex-1 text-base font-semibold text-white tracking-wider"
@@ -56,13 +80,16 @@ export default function SearchScreen() {
                   <View className="space-y-2 mb-4">
                     <Image
                       className="rounded-3xl"
-                      source={require('../../assets/images/moviePoster2.jpeg')}
+                      //   source={require('../../assets/images/moviePoster2.jpeg')}
+                      source={{
+                        uri: image500(item?.poster_path) || fallbackMoviePoster,
+                      }}
                       style={{width: width * 0.44, height: height * 0.3}}
                     />
                     <Text className="text-gray-300 ml-1">
-                      {movieName.length > 22
-                        ? movieName.slice(0, 22) + '...'
-                        : movieName}
+                      {item?.title.length > 22
+                        ? item?.title.slice(0, 22) + '...'
+                        : item?.title}
                     </Text>
                   </View>
                 </TouchableWithoutFeedback>
