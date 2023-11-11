@@ -8,9 +8,10 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import {styles} from '../theme';
+import {styles, theme} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {fallbackMoviePoster, image185} from '../api/MovieDb';
+import {ArrowRightIcon} from 'react-native-heroicons/outline';
 var {width, height} = Dimensions.get('window');
 
 export default function MovieList({title, data, hideSeeAll}) {
@@ -23,9 +24,7 @@ export default function MovieList({title, data, hideSeeAll}) {
         <Text className="text-white text-xl">{title}</Text>
         {!hideSeeAll && (
           <TouchableOpacity>
-            <Text style={styles.text} className="text-lg">
-              Semua
-            </Text>
+            <ArrowRightIcon size={30} strokeWidth={2} color={theme.text} />
           </TouchableOpacity>
         )}
       </View>
