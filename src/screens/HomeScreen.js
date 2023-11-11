@@ -38,7 +38,7 @@ export default function HomeScreen() {
 
   const getTrendingMovies = async () => {
     const data = await fetchTrendingMovies();
-    console.log('got trending movies:', data);
+    // console.log('got trending movies:', data);
     if (data && data.results) {
       setTrending(data.results);
     }
@@ -46,14 +46,14 @@ export default function HomeScreen() {
   };
   const getUpcomingMovies = async () => {
     const data = await fetchUpcomingMovies();
-    console.log('got trending movies:', data);
+    // console.log('got upcoming movies:', data);
     if (data && data.results) {
       setUpcoming(data.results);
     }
   };
   const getTopRatedMovies = async () => {
     const data = await fetchTopRatedMovies();
-    console.log('got trending movies:', data);
+    // console.log('got top rated movies:', data);
     if (data && data.results) {
       setTopRated(data.results);
     }

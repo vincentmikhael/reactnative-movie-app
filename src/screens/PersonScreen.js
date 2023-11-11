@@ -17,6 +17,7 @@ import Loading from '../components/Loading';
 import {
   fallbackPersonImage,
   fetchPersonDetails,
+  fetchPersonMovies,
   image342,
 } from '../api/MovieDb';
 
@@ -36,13 +37,20 @@ export default function PersonScreen() {
     setLoading(true);
     console.log('person: ', item.id);
     getPersonDetails(item?.id);
+    getPersonMovies(item?.id);
   }, [item]);
 
   const getPersonDetails = async id => {
     const data = await fetchPersonDetails(id);
-    console.log('got person details: ', data);
+    // console.log('got person details: ', data);
     if (data) setPerson(data);
     setLoading(false);
+  };
+
+  const getPersonMovies = async id => {
+    const data = await fetchPersonMovies(id);
+    console.log('got person movies: ', data.cast);
+    if (data && data.cast) setPersonMovies(data.cast);
   };
 
   return (
@@ -116,7 +124,7 @@ export default function PersonScreen() {
               <View className="px-2 items-center">
                 <Text className="text-white font-semibold">Popularity</Text>
                 <Text className="text-neutral-300 text-sm">
-                  {person?.popularity}
+                  {person?.popularity?.toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -128,7 +136,11 @@ export default function PersonScreen() {
             </Text>
           </View>
           {/* daftar film */}
-          <MovieList title={'Riwayat Perfilman'} data={personMovies} />
+          <MovieList
+            title={'Riwayat Perfilman'}
+            hideSeeAll={true}
+            data={personMovies}
+          />
         </View>
       )}
     </ScrollView>
