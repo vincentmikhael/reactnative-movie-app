@@ -17,6 +17,13 @@ import {LinearGradient} from 'react-native-linear-gradient';
 import Cast from '../components/Cast';
 import MovieList from '../components/MovieList';
 import Loading from '../components/Loading';
+import {
+  fallbackMoviePoster,
+  fetchMovieCredits,
+  fetchMovieDetails,
+  fetchSimilarMovies,
+  image500,
+} from '../api/MovieDb';
 
 var {width, height} = Dimensions.get('window');
 const ios = Platform.OS === 'ios';
@@ -28,7 +35,37 @@ export default function MovieScreen() {
   const [cast, setCast] = useState([1, 2, 3, 4, 5]);
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {}, [item]);
+  const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    // console.log('itemid: ', item.id);
+    setLoading(true);
+    getMoviDetails(item.id);
+    getMoviCredits(item.id);
+    getSimilarMovies(item.id);
+  }, [item]);
+
+  const getMoviDetails = async id => {
+    const data = await fetchMovieDetails(id);
+    // console.log('got movie details: ', data);
+    if (data) setMovie(data);
+    setLoading(false);
+  };
+
+  const getMoviCredits = async id => {
+    const data = await fetchMovieCredits(id);
+    // console.log('got movie casts: ', data);
+    if (data && data.cast) setCast(data.cast);
+    // setLoading(false);
+  };
+
+  const getSimilarMovies = async id => {
+    const data = await fetchSimilarMovies(id);
+    // console.log('got similar movie', data);
+    if (data && data.results) setSimilarMovies(data.results);
+    // setLoading(false);
+  };
+
   let movieName = 'Equalizer 3';
 
   return (
@@ -60,8 +97,10 @@ export default function MovieScreen() {
         ) : (
           <View>
             <Image
-              source={require('../../assets/images/moviePoster1.jpeg')}
-              //source={{uri: image500(item.poster_path)}}
+              // source={require('../../assets/images/moviePoster1.jpeg')}
+              source={{
+                uri: image500(movie?.poster_path) || fallbackMoviePoster,
+              }}
               style={{
                 width,
                 height: height * 0.55,
@@ -85,28 +124,29 @@ export default function MovieScreen() {
       <View style={{marginTop: -(height * 0.09)}} className="space-y-3">
         {/* title */}
         <Text className="text-white text-center text-3xl font-bold tracking-wider">
-          {movieName}
+          {movie?.title}
         </Text>
         {/* status, release, runtime */}
         <Text className="text-neutral-400 text-center text-base font-semibold">
-          Released • 2022 • 170m
+          {movie?.status} • {movie?.release_date?.split('-')[0]} •{' '}
+          {movie?.runtime} min
         </Text>
         {/* genre */}
         <View className="flex-row justify-center mx-4 space-x-2">
-          <Text className="text-neutral-400 text-center text-base font-semibold">
-            Action •
-          </Text>
-          <Text className="text-neutral-400 text-center text-base font-semibold">
-            Triller •
-          </Text>
-          <Text className="text-neutral-400 text-center text-base font-semibold">
-            Dark
-          </Text>
+          {movie?.genres?.map((genre, index) => {
+            let showDot = index + 1 !== movie.genres.length;
+            return (
+              <Text
+                key={'genre-' + index}
+                className="text-neutral-400 text-center text-base font-semibold">
+                {genre?.name} {showDot ? '•' : null}
+              </Text>
+            );
+          })}
         </View>
         {/* deskripsi */}
         <Text className="text-neutral-400 mx-4 tracking-wide">
-          Robert McCall (Denzel Washington) kembali beraksi, kali ini ia akan
-          menghadapi mafia sadis yang mengganggu teman-temannya di Italia
+          {movie?.overview}
         </Text>
       </View>
       {/* Pemeran */}
