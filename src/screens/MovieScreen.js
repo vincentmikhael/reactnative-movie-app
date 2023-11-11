@@ -150,12 +150,14 @@ export default function MovieScreen() {
             </Text>
           </View>
           {/* Pemeran */}
-          <Cast navigation={navigation} cast={cast} />
-          <MovieList
-            title="Film Serupa"
-            hideSeeAll={true}
-            data={similarMovies}
-          />
+          {cast.length > 0 && <Cast navigation={navigation} cast={cast} />}
+          {similarMovies.length > 0 && (
+            <MovieList
+              title="Film Serupa"
+              hideSeeAll={true}
+              data={similarMovies}
+            />
+          )}
         </>
       )}
     </ScrollView>
