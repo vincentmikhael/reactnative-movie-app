@@ -115,7 +115,6 @@ export default function MovieScreen() {
                 style={{
                   width,
                   height: height * 0.55,
-                  resizeMode: 'contain',
                 }}
               />
               <LinearGradient
