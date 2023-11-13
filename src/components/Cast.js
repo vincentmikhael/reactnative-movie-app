@@ -1,6 +1,7 @@
 import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {fallbackPersonImage, image185} from '../api/MovieDb';
+import ProgressiveImage from 'rn-progressive-image';
 
 export default function Cast({cast, navigation}) {
   let characterName = 'John Wick';
@@ -20,7 +21,7 @@ export default function Cast({cast, navigation}) {
                 className="mr-4 items-center"
                 onPress={() => navigation.navigate('Person', person)}>
                 <View className="overflow-hidden rounded-full h-20 w-20 items-center border border-neutral-500">
-                  <Image
+                  <ProgressiveImage
                     // source={require('../../assets/images/castImage1.jpeg')}
                     source={{
                       uri:

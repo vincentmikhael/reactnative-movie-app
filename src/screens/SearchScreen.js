@@ -15,6 +15,7 @@ import {XMarkIcon} from 'react-native-heroicons/outline';
 import Loading from '../components/Loading';
 import {debounce} from 'lodash';
 import {fallbackMoviePoster, fetchSearchMovies, image185} from '../api/MovieDb';
+import ProgressiveImage from 'rn-progressive-image';
 
 const {width, height} = Dimensions.get('window');
 
@@ -78,7 +79,7 @@ export default function SearchScreen() {
                   key={index}
                   onPress={() => navigation.push('Movie', item)}>
                   <View className="space-y-2 mb-4">
-                    <Image
+                    <ProgressiveImage
                       className="rounded-3xl"
                       //   source={require('../../assets/images/moviePoster2.jpeg')}
                       source={{

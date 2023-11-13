@@ -39,6 +39,10 @@ const apiCall = async (endpoint, params) => {
     const response = await axios.request(options);
     return response.data;
   } catch (error) {
+    if (error.code === 'ERR_NETWORK') {
+      //alert('no internet connection');
+      return {error: true, code: 'ERR_NETWORK'};
+    }
     console.log('error:', error);
     return {};
   }

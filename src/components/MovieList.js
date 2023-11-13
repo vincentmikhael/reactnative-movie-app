@@ -12,6 +12,7 @@ import {theme} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {fallbackMoviePoster, image185} from '../api/MovieDb';
 import {ArrowRightIcon} from 'react-native-heroicons/outline';
+import ProgressiveImage from 'rn-progressive-image';
 var {width, height} = Dimensions.get('window');
 
 export default function MovieList({title, data, hideSeeAll}) {
@@ -39,7 +40,7 @@ export default function MovieList({title, data, hideSeeAll}) {
               key={index}
               onPress={() => navigation.push('Movie', item)}>
               <View className="space-y-1 mr-4">
-                <Image
+                <ProgressiveImage
                   // source={require('../../assets/images/moviePoster2.jpeg')}
                   source={{
                     uri: image185(item.poster_path) || fallbackMoviePoster,
@@ -48,6 +49,7 @@ export default function MovieList({title, data, hideSeeAll}) {
                   style={{
                     width: width * 0.33,
                     height: height * 0.22,
+                    resizeMode: 'contain',
                   }}
                 />
                 <Text className="text-neutral-300 ml-1 text-center">

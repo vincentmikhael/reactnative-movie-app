@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
-  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
@@ -14,6 +13,7 @@ import {ChevronLeftIcon} from 'react-native-heroicons/outline';
 import {HeartIcon} from 'react-native-heroicons/solid';
 import {styles, theme} from '../theme';
 import {LinearGradient} from 'react-native-linear-gradient';
+import ProgressiveImage from 'rn-progressive-image';
 import Cast from '../components/Cast';
 import MovieList from '../components/MovieList';
 import Loading from '../components/Loading';
@@ -36,6 +36,7 @@ export default function MovieScreen() {
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4, 5]);
   const [loading, setLoading] = useState(false);
   const [movie, setMovie] = useState({});
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     // console.log('itemid: ', item.id);
@@ -48,7 +49,11 @@ export default function MovieScreen() {
   const getMoviDetails = async id => {
     const data = await fetchMovieDetails(id);
     // console.log('got movie details: ', data);
-    if (data) setMovie(data);
+    if (data && !data?.error) {
+      setMovie(data);
+    } else {
+      data?.code === 'ERR_NETWORK' ? setIsError(true) : setIsError(false);
+    }
     setLoading(false);
   };
 
@@ -72,11 +77,11 @@ export default function MovieScreen() {
     <ScrollView
       contentContainerStyle={{paddingBottom: 20}}
       className="flex-1 bg-neutral-900">
-      {/* back button dan poster */}
       {loading ? (
         <Loading />
       ) : (
         <>
+          {/* back button dan poster */}
           <View className="w-full">
             <SafeAreaView
               className={
@@ -97,14 +102,20 @@ export default function MovieScreen() {
               </TouchableOpacity>
             </SafeAreaView>
             <View>
-              <Image
+              <ProgressiveImage
                 // source={require('../../assets/images/moviePoster1.jpeg')}
-                source={{
-                  uri: image500(movie?.poster_path) || fallbackMoviePoster,
-                }}
+                source={
+                  isError
+                    ? require('../../assets/images/fallbackMoviePoster.jpeg')
+                    : {
+                        uri:
+                          image500(movie?.poster_path) || fallbackMoviePoster,
+                      }
+                }
                 style={{
                   width,
                   height: height * 0.55,
+                  resizeMode: 'contain',
                 }}
               />
               <LinearGradient
@@ -121,42 +132,50 @@ export default function MovieScreen() {
             </View>
           </View>
           {/* detil film */}
-          <View style={{marginTop: -(height * 0.09)}} className="space-y-3">
-            {/* title */}
-            <Text className="text-white text-center text-3xl font-bold tracking-wider">
-              {movie?.title}
+          {isError ? (
+            <Text className="text-white text-center text-3xl font-bold tracking-wider m-1">
+              Silahkan cek koneksi Internet Anda
             </Text>
-            {/* status, release, runtime */}
-            <Text className="text-neutral-400 text-center text-base font-semibold">
-              {movie?.status} • {movie?.release_date?.split('-')[0]} •{' '}
-              {movie?.runtime} min
-            </Text>
-            {/* genre */}
-            <View className="flex-row justify-center mx-4 space-x-2">
-              {movie?.genres?.map((genre, index) => {
-                let showDot = index + 1 !== movie.genres.length;
-                return (
-                  <Text
-                    key={'genre-' + index}
-                    className="text-neutral-400 text-center text-base font-semibold">
-                    {genre?.name} {showDot ? '•' : null}
-                  </Text>
-                );
-              })}
-            </View>
-            {/* deskripsi */}
-            <Text className="text-neutral-400 mx-4 tracking-wide">
-              {movie?.overview}
-            </Text>
-          </View>
-          {/* Pemeran */}
-          {cast.length > 0 && <Cast navigation={navigation} cast={cast} />}
-          {similarMovies.length > 0 && (
-            <MovieList
-              title="Film Serupa"
-              hideSeeAll={true}
-              data={similarMovies}
-            />
+          ) : (
+            <>
+              <View style={{marginTop: -(height * 0.09)}} className="space-y-3">
+                {/* title */}
+                <Text className="text-white text-center text-3xl font-bold tracking-wider">
+                  {movie?.title}
+                </Text>
+                {/* status, release, runtime */}
+                <Text className="text-neutral-400 text-center text-base font-semibold">
+                  {movie?.status} • {movie?.release_date?.split('-')[0]} •{' '}
+                  {movie?.runtime} min
+                </Text>
+                {/* genre */}
+                <View className="flex-row justify-center mx-4 space-x-2">
+                  {movie?.genres?.map((genre, index) => {
+                    let showDot = index + 1 !== movie.genres.length;
+                    return (
+                      <Text
+                        key={'genre-' + index}
+                        className="text-neutral-400 text-center text-base font-semibold">
+                        {genre?.name} {showDot ? '•' : null}
+                      </Text>
+                    );
+                  })}
+                </View>
+                {/* deskripsi */}
+                <Text className="text-neutral-400 mx-4 tracking-wide">
+                  {movie?.overview}
+                </Text>
+              </View>
+              {/* Pemeran */}
+              {cast.length > 0 && <Cast navigation={navigation} cast={cast} />}
+              {similarMovies.length > 0 && (
+                <MovieList
+                  title="Film Serupa"
+                  hideSeeAll={true}
+                  data={similarMovies}
+                />
+              )}
+            </>
           )}
         </>
       )}

@@ -1,6 +1,5 @@
 import {
   Dimensions,
-  Image,
   Platform,
   ScrollView,
   Text,
@@ -20,6 +19,7 @@ import {
   fetchPersonMovies,
   image342,
 } from '../api/MovieDb';
+import ProgressiveImage from 'rn-progressive-image';
 
 var {width, height} = Dimensions.get('window');
 const ios = Platform.OS === 'ios';
@@ -86,12 +86,16 @@ export default function PersonScreen() {
               shadowOpacity: 1,
             }}>
             <View className="items-center rounded-full overflow-hidden h-72 w-72 border-2 border-neutral-500">
-              <Image
+              <ProgressiveImage
                 //source={require('../../assets/images/castImage1.jpeg')}
                 source={{
                   uri: image342(person?.profile_path) || fallbackPersonImage,
                 }}
-                style={{height: height * 0.43, width: width * 0.74}}
+                style={{
+                  height: height * 0.43,
+                  width: width * 0.74,
+                  resizeMode: 'contain',
+                }}
               />
             </View>
           </View>
