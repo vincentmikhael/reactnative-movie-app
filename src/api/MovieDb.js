@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {baseUrl, posterImageUrl, apiKey} from '../constants';
 
 // endpoints

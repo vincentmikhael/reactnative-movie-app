@@ -15,7 +15,7 @@ import {ArrowRightIcon} from 'react-native-heroicons/outline';
 import ProgressiveImage from 'rn-progressive-image';
 var {width, height} = Dimensions.get('window');
 
-export default function MovieList({title, data, hideSeeAll}) {
+export default function MovieList({title, data, hideSeeAll,position = 'horizontal'}) {
   let movieName = 'Equalizer 3';
   const navigation = useNavigation();
   return (
@@ -23,15 +23,15 @@ export default function MovieList({title, data, hideSeeAll}) {
       {/* title */}
       <View className="mx-4 flex-row justify-between items-center">
         <Text className="text-white text-xl">{title}</Text>
-        {!hideSeeAll && (
+        {(!hideSeeAll && position != 'vertical') && (
           <TouchableOpacity>
-            <ArrowRightIcon size={30} strokeWidth={2} color={theme.text} />
+            <ArrowRightIcon onPress={()=>{title != 'Rating Teratas' ? navigation.push('Upcoming') : null}} size={30} strokeWidth={2} color={theme.text} />
           </TouchableOpacity>
         )}
       </View>
       {/* list film */}
       <ScrollView
-        horizontal
+        horizontal={position == 'horizontal'}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 15}}>
         {data.map((item, index) => {
@@ -52,7 +52,7 @@ export default function MovieList({title, data, hideSeeAll}) {
                     resizeMode: 'contain',
                   }}
                 />
-                <Text className="text-neutral-300 ml-1 text-center">
+                <Text className={"text-neutral-300 ml-1 text-center " + (position == 'vertical' ? 'relative bottom-24 left-10': '')}>
                   {item?.title?.length > 14
                     ? item.title.slice(0, 14) + '...'
                     : item.title}
